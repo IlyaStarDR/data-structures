@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//enqueue A, B -> [A, B] B, A -> dequeue
 class ArrayQueueTest {
 
     @Test
@@ -47,14 +46,13 @@ class ArrayQueueTest {
 
         queue.enqueue("A");
         queue.enqueue("B");
-
         assertEquals(2, queue.size(), "Size differs");
-        assertEquals("B", queue.peek(), "Elements differ");
-        assertEquals("B", queue.peek(), "Elements differ");
+        assertEquals("A", queue.peek(), "Elements differ");
+        assertEquals("A", queue.peek(), "Elements differ");
         assertEquals(2, queue.size(), "Size differs");
 
         queue.dequeue();
-        assertEquals("A", queue.peek(), "Elements differ");
+        assertEquals("B", queue.peek(), "Elements differ");
         assertEquals(1, queue.size(), "Size differs");
 
     }

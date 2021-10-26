@@ -1,7 +1,5 @@
 package com.company.datastructures.queue;
 
-import java.util.Arrays;
-
 public class ArrayQueue implements Queue {
     private int size;
     Object[] queue;
@@ -17,7 +15,12 @@ public class ArrayQueue implements Queue {
     @Override
     public void enqueue(Object value) {
         resize();
-        queue[size] = value;
+        Object[] updatedQueue = new Object[size + 1];
+        updatedQueue[0] = value;
+        for (int i = 0; i < size; i++) {
+            updatedQueue[i + 1] = queue[i];
+        }
+        queue = updatedQueue;
         size++;
     }
 
@@ -74,8 +77,12 @@ public class ArrayQueue implements Queue {
 
     @Override
     public String toString() {
-        return "ArrayQueue{" +
-                "queue=" + Arrays.toString(queue) +
-                '}';
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            result.append(queue[i]);
+            result.append(" ");
+        }
+
+        return result.toString();
     }
 }
