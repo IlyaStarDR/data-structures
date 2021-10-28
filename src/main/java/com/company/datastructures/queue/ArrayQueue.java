@@ -80,12 +80,19 @@ public class ArrayQueue implements Queue {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            result.append(queue[i]);
-            result.append(" ");
+        if (isEmpty()) {
+            return "[]";
         }
 
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        for (int i = 0; i < size; i++) {
+            result.append(queue[i]);
+            if (i == size - 1) {
+                return result.append(']').toString();
+            }
+            result.append(", ");
+        }
         return result.toString();
     }
 }
