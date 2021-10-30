@@ -1,5 +1,7 @@
 package com.company.datastructures.list;
 
+import java.util.StringJoiner;
+
 public class ArrayList implements List {
     private int size;
     Object[] list;
@@ -34,9 +36,7 @@ public class ArrayList implements List {
             throw new IndexOutOfBoundsException();
         }
         resize();
-        for (int i = index; i < size; i++) {
-            list[i + 1] = list[i];
-        }
+        System.arraycopy(list, index, list, index + 1, size - index);
         size++;
         list[index] = value;
     }
@@ -55,11 +55,9 @@ public class ArrayList implements List {
             return null;
         }
         Object removedElement = list[index];
+        System.arraycopy(list, index + 1, list, index, size - index - 1);
+        list[size - 1] = null;
         size--;
-        for (int i = index; i < size; i++) {
-            list[i] = list[i + 1];
-        }
-
         return removedElement;
     }
 
@@ -116,12 +114,7 @@ public class ArrayList implements List {
         if (value == null) {
             throw new IllegalStateException("Null element is not supported");
         }
-        for (int i = 0; i < size; i++) {
-            if (list[i].equals(value)) {
-                return true;
-            }
-        }
-        return false;
+        return indexOf(value) != -1;
     }
 
     @Override
@@ -152,18 +145,9 @@ public class ArrayList implements List {
 
     @Override
     public String toString() {
-        if (isEmpty()) {
-            return "[]";
-        }
-
-        StringBuilder result = new StringBuilder();
-        result.append("[");
+        StringJoiner result = new StringJoiner(",", "[", "]");
         for (int i = 0; i < size; i++) {
-            result.append(list[i]);
-            if (i == size - 1) {
-                return result.append(']').toString();
-            }
-            result.append(", ");
+            result.add(list[i].toString());
         }
         return result.toString();
     }

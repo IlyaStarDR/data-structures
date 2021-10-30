@@ -1,5 +1,7 @@
 package com.company.datastructures.queue;
 
+import java.util.StringJoiner;
+
 public class ArrayQueue implements Queue {
     private int size;
     Object[] queue;
@@ -80,18 +82,9 @@ public class ArrayQueue implements Queue {
 
     @Override
     public String toString() {
-        if (isEmpty()) {
-            return "[]";
-        }
-
-        StringBuilder result = new StringBuilder();
-        result.append("[");
+        StringJoiner result = new StringJoiner(",", "[", "]");
         for (int i = 0; i < size; i++) {
-            result.append(queue[i]);
-            if (i == size - 1) {
-                return result.append(']').toString();
-            }
-            result.append(", ");
+            result.add(queue[i].toString());
         }
         return result.toString();
     }

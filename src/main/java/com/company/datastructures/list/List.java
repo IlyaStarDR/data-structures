@@ -20,10 +20,7 @@ public interface List {
 
     boolean contains(Object value);
 
-    // [A, B, A, C] indexOf(A) -> 0
-    // -1 if not exist
     int indexOf(Object value);
 
-    // [A, B, A, C] lastIndexOf(A) -> 2
     int lastIndexOf(Object value);
 }
