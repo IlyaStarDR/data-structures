@@ -1,4 +1,6 @@
-package com.company.datastructures.list;
+package com.company.datastructures.list.arraylist;
+
+import com.company.datastructures.list.List;
 
 import java.util.StringJoiner;
 
@@ -26,14 +28,14 @@ public class ArrayList implements List {
 
     @Override
     public void add(Object value, int index) {
-        if (isEmpty()) {
-            throw new IllegalStateException("List capacity is 0");
-        }
         if (value == null) {
             throw new IllegalStateException("Null element is not supported");
         }
         if (index < 0 || size < index) {
             throw new IndexOutOfBoundsException();
+        }
+        if (isEmpty()) {
+            throw new IllegalStateException("List capacity is 0");
         }
         resize();
         System.arraycopy(list, index, list, index + 1, size - index);
@@ -52,7 +54,7 @@ public class ArrayList implements List {
     @Override
     public Object remove(int index) {
         if (index < 0 || index >= size) {
-            return null;
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         Object removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
@@ -63,11 +65,11 @@ public class ArrayList implements List {
 
     @Override
     public Object get(int index) {
-        if (isEmpty()) {
-            return null;
-        }
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
+        }
+        if (isEmpty()) {
+            return null;
         }
         return list[index];
     }
@@ -108,11 +110,11 @@ public class ArrayList implements List {
 
     @Override
     public boolean contains(Object value) {
-        if (isEmpty()) {
-            return false;
-        }
         if (value == null) {
             throw new IllegalStateException("Null element is not supported");
+        }
+        if (isEmpty()) {
+            return false;
         }
         return indexOf(value) != -1;
     }

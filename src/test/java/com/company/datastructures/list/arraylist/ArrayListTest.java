@@ -1,4 +1,4 @@
-package com.company.datastructures.list;
+package com.company.datastructures.list.arraylist;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -109,8 +109,10 @@ class ArrayListTest {
     void testRemoveFromIndexThatIsOutOfBound() {
         ArrayList list = new ArrayList(1);
         list.add(1);
-        assertNull(list.remove(-1), "Element is not null");
-        assertNull(list.remove(1), "Element is not null");
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            list.remove(-1);
+            list.remove(1);
+        });
     }
 
     @DisplayName("Test removing element from empty list")
@@ -118,7 +120,7 @@ class ArrayListTest {
     void testRemoveElementFromEmptyList() {
         ArrayList list = new ArrayList(1);
         assertTrue(list.isEmpty(), "List is not empty");
-        assertNull(list.remove(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(0));
     }
 
     @DisplayName("Test removing element from not empty list")
@@ -150,7 +152,9 @@ class ArrayListTest {
     @Test
     void testGetElementFromEmptyList() {
         ArrayList list = new ArrayList(1);
-        assertNull(list.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            list.get(0);
+        });
     }
 
     @DisplayName("Test getting element from not empty list")
@@ -185,16 +189,17 @@ class ArrayListTest {
         assertFalse(list.contains(100), "List contains such element");
     }
 
-    @DisplayName("Test not empty list contains null returns false")
+    @DisplayName("Test not empty list contains null returns throws")
     @Test
     void testNotEmptyListContainsNullThrowsIllegalStateException() {
         ArrayList list = new ArrayList();
-        assertFalse(list.contains(null), "List contains such element");
+        list.add(5);
+        assertThrows(IllegalStateException.class, () -> list.contains(null));
     }
 
-    @DisplayName("Test after clear list size should be 0 and elements null")
+    @DisplayName("Test after clear list size should be 0")
     @Test
-    void testClearListSizeShouldBeZeroAndElementsNull() {
+    void testClearListSizeShouldBeZero() {
         ArrayList list = new ArrayList();
         list.add(1);
         list.add(1);
@@ -202,9 +207,6 @@ class ArrayListTest {
         assertEquals(3, list.size(), "Size differs");
         list.clear();
         assertTrue(list.isEmpty(), "List is not empty");
-        assertNull(list.get(0),"Element is not null");
-        assertNull(list.get(1),"Element is not null");
-        assertNull(list.get(2),"Element is not null");
     }
 
 
@@ -264,7 +266,6 @@ class ArrayListTest {
         assertEquals(0, list.size(), "Size differs");
         assertEquals(-1, list.indexOf(2), "Indexes deffer");
     }
-
 
 
     @DisplayName("Test index of on not empty list returns index")
