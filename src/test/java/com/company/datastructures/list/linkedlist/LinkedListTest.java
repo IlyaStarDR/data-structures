@@ -1,6 +1,5 @@
 package com.company.datastructures.list.linkedlist;
 
-import com.company.datastructures.list.arraylist.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

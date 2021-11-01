@@ -4,10 +4,6 @@ public class Node {
     private Object data;
     private Node next;
 
-    public Node(Object data) {
-        this.data = data;
-    }
-
     public Node() {
         this.data = new Object();
     }

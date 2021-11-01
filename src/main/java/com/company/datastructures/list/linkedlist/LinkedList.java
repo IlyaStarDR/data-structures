@@ -10,20 +10,7 @@ public class LinkedList implements List {
 
     @Override
     public void add(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null is not supported");
-        }
-        Node node = new Node(value);
-        if (head == null) {
-            head = node;
-        } else {
-            Node currentNode = head;
-            while (currentNode.getNext() != null) {
-                currentNode = currentNode.getNext();
-            }
-            currentNode.setNext(node);
-        }
-        size++;
+        add(value, size);
     }
 
     @Override
