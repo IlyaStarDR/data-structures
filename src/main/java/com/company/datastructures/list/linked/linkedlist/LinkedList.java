@@ -3,6 +3,7 @@ package com.company.datastructures.list.linked.linkedlist;
 import com.company.datastructures.list.List;
 import com.company.datastructures.list.linked.Node;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class LinkedList implements List {
@@ -16,7 +17,7 @@ public class LinkedList implements List {
 
     @Override
     public void add(Object value, int index) {
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalStateException("Null element is not supported");
         }
         if (index < 0 || size < index) {
@@ -81,7 +82,7 @@ public class LinkedList implements List {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalStateException("Null is not supported");
         }
         Node element = head;
@@ -111,7 +112,7 @@ public class LinkedList implements List {
 
     @Override
     public boolean contains(Object value) {
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalStateException("Null is not supported");
         }
         if (isEmpty()) {
@@ -122,7 +123,7 @@ public class LinkedList implements List {
 
     @Override
     public int indexOf(Object value) {
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalStateException("Null is not supported");
         }
 
@@ -136,7 +137,7 @@ public class LinkedList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (value == null) {
+        if (Objects.isNull(value)) {
             throw new IllegalStateException("Null is not supported");
         }
 
@@ -153,7 +154,7 @@ public class LinkedList implements List {
         StringJoiner result = new StringJoiner(",", "[", "]");
         Node currentNode = head;
         result.add(currentNode.toString());
-        while (currentNode.getNext() != null) {
+        while (Objects.nonNull(currentNode.getNext())) {
             currentNode = currentNode.getNext();
             result.add(currentNode.toString());
         }
