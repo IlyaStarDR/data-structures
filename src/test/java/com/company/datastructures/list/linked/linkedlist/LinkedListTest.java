@@ -1,4 +1,4 @@
-package com.company.datastructures.list.linkedlist;
+package com.company.datastructures.list.linked.linkedlist;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

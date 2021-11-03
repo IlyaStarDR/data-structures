@@ -1,6 +1,7 @@
-package com.company.datastructures.list.linkedlist;
+package com.company.datastructures.list.linked.linkedlist;
 
 import com.company.datastructures.list.List;
+import com.company.datastructures.list.linked.Node;
 
 import java.util.StringJoiner;
 
