@@ -48,7 +48,7 @@ public class LinkedList implements List {
         Node removedNode;
         if (index == 0) {
             removedNode = head;
-            head.setNext(currentNode.getNext());
+            head = currentNode.getNext();
         } else {
             for (int i = 0; i < index - 1; i++) {
                 currentNode = currentNode.getNext();
@@ -150,13 +150,13 @@ public class LinkedList implements List {
 
     @Override
     public String toString() {
-        StringJoiner result = new StringJoiner(",", "[", "]");
-        Node currentNode = head;
-        result.add(currentNode.toString());
-        while (Objects.nonNull(currentNode.getNext())) {
-            currentNode = currentNode.getNext();
-            result.add(currentNode.toString());
+        StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
+        Node current = head;
+        while (current != null) {
+            stringJoiner.add(current.getData().toString());
+            current = current.getNext();
         }
-        return result.toString();
+
+        return stringJoiner.toString();
     }
 }

@@ -32,11 +32,14 @@ class LinkedListTest {
         LinkedList linkedList = new LinkedList();
         linkedList.add(10);
         linkedList.add(100);
-        assertEquals(2, linkedList.size(), "LinkedList size differs");
-        Object actualRemovedByIndexOne = linkedList.remove(1);
-        Object actualRemovedByIndexZero = linkedList.remove(0);
-        assertEquals(100, actualRemovedByIndexOne, "Elements do not match");
-        assertEquals(10, actualRemovedByIndexZero, "Elements do not match");
+        linkedList.add(1000);
+        assertEquals(3, linkedList.size(), "LinkedList size differs");
+        Object actualRemovedTen = linkedList.remove(0);
+        Object actualRemovedOneThousand = linkedList.remove(1);
+        Object actualRemovedOneHundred = linkedList.remove(0);
+        assertEquals(100, actualRemovedOneHundred, "Elements do not match");
+        assertEquals(10, actualRemovedTen, "Elements do not match");
+        assertEquals(1000, actualRemovedOneThousand, "Elements do not match");
         assertTrue(linkedList.isEmpty(), "LinkedList is not empty");
     }
 
