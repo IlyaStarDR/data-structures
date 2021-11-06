@@ -76,14 +76,11 @@ public class ArrayList implements List {
 
     @Override
     public Object set(Object value, int index) {
-        if (isEmpty()) {
-            return null;
+        if (index < 0 || size <= index) {
+            throw new IndexOutOfBoundsException();
         }
         if (value == null) {
             throw new IllegalStateException("Null element is not supported");
-        }
-        if (index < 0 || size <= index) {
-            throw new IndexOutOfBoundsException();
         }
         Object toBeSet = list[index];
         list[index] = value;
