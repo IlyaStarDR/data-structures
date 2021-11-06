@@ -1,8 +1,9 @@
-package com.company.datastructures.list.linked.linkedlist;
+package com.company.datastructures.list.linkedlist;
 
 public class Node {
     private Object data;
     private Node next;
+    private Node prev;
 
     public Node() {
         this.data = new Object();
@@ -27,5 +28,13 @@ public class Node {
     @Override
     public String toString() {
         return data.toString();
+    }
+
+    public Node getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Node prev) {
+        this.prev = prev;
     }
 }

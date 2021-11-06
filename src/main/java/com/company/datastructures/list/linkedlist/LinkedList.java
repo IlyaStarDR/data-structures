@@ -1,4 +1,4 @@
-package com.company.datastructures.list.linked.linkedlist;
+package com.company.datastructures.list.linkedlist;
 
 import com.company.datastructures.list.List;
 
@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class LinkedList implements List {
+    private Node tail;
     private Node head;
     private int size;
 
@@ -22,18 +23,29 @@ public class LinkedList implements List {
         if (index < 0 || size < index) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
+
         Node newNode = new Node();
         newNode.setData(value);
-
-        if (index == 0) {
+        if (size == 0) {
+            head = newNode;
+            tail = newNode;
+        } else if (index == 0) {
+            head.setPrev(newNode);
             newNode.setNext(head);
             head = newNode;
+        } else if (index == size) {
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
+            tail = newNode;
         } else {
             Node currentNode = head;
             for (int i = 0; i < index - 1; i++) {
                 currentNode = currentNode.getNext();
             }
+
+            newNode.setPrev(currentNode);
             newNode.setNext(currentNode.getNext());
+            currentNode.getNext().setPrev(newNode);
             currentNode.setNext(newNode);
         }
         size++;
@@ -44,21 +56,32 @@ public class LinkedList implements List {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
+
         Node currentNode = head;
         Node removedNode;
         if (index == 0) {
             removedNode = head;
-            head = currentNode.getNext();
+            if (size == 1) {
+                tail = null;
+                head = null;
+            } else {
+                head = currentNode.getNext();
+                head.setPrev(null);
+            }
+        } else if (index == size - 1) {
+            removedNode = tail;
+            tail = tail.getPrev();
+            tail.setNext(null);
         } else {
             for (int i = 0; i < index - 1; i++) {
                 currentNode = currentNode.getNext();
             }
             removedNode = currentNode.getNext();
-            if (index == size - 1) {
-                currentNode.setNext(null);
-            } else {
-                currentNode.setNext(currentNode.getNext().getNext());
-            }
+
+            currentNode.setNext(currentNode.getNext().getNext());
+            currentNode.getNext().setPrev(currentNode);
+            removedNode.setPrev(null);
+            removedNode.setNext(null);
         }
         size--;
         return removedNode.getData();
@@ -95,6 +118,7 @@ public class LinkedList implements List {
 
     @Override
     public void clear() {
+        tail = null;
         head = null;
         size = 0;
     }
@@ -106,7 +130,7 @@ public class LinkedList implements List {
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        return size == 0;
     }
 
     @Override

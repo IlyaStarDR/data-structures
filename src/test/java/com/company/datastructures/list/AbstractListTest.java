@@ -40,12 +40,16 @@ public abstract class AbstractListTest {
         list.add(2);
         assertEquals(2, list.size(), "Size differs");
         list.add(3);
+        list.add(4);
+        list.add(5);
         Object actualFirstRemoved = list.remove(0);
         Object actualSecondRemoved = list.remove(1);
-        Object actualThirdRemoved = list.remove(0);
+        Object actualThirdRemoved = list.remove(2);
+        list.remove(0);
+        list.remove(0);
         assertEquals(1, actualFirstRemoved, "Elements do not match");
         assertEquals(3, actualSecondRemoved, "Elements do not match");
-        assertEquals(2, actualThirdRemoved, "Elements do not match");
+        assertEquals(5, actualThirdRemoved, "Elements do not match");
         assertEquals(0, list.size(), "Size differs");
         assertTrue(list.isEmpty(), "List is not empty");
     }
@@ -76,10 +80,12 @@ public abstract class AbstractListTest {
         list.add(3);
         list.add(1, 0);
         list.add(2, 1);
+        list.add(4, 3);
         assertEquals(1, list.get(0), "Indexes differ");
         assertEquals(2, list.get(1), "Indexes differ");
         assertEquals(3, list.get(2), "Indexes differ");
-        assertEquals(3, list.size(), "Size differs");
+        assertEquals(4, list.get(3), "Indexes differ");
+        assertEquals(4, list.size(), "Size differs");
     }
 
     @DisplayName("Test adding element to the end of the list by index equals to size")
