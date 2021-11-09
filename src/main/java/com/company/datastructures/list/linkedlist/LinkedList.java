@@ -2,13 +2,25 @@ package com.company.datastructures.list.linkedlist;
 
 import com.company.datastructures.list.List;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class LinkedList implements List {
+public class LinkedList implements List, Iterable {
     private Node tail;
     private Node head;
     private int size;
+
+    private static class Node {
+        private Object data;
+        private Node next;
+        private Node prev;
+
+        private Node() {
+            this.data = new Object();
+        }
+    }
+
 
     @Override
     public void add(Object value) {
@@ -25,28 +37,28 @@ public class LinkedList implements List {
         }
 
         Node newNode = new Node();
-        newNode.setData(value);
+        newNode.data = value;
         if (size == 0) {
             head = newNode;
             tail = newNode;
         } else if (index == 0) {
-            head.setPrev(newNode);
-            newNode.setNext(head);
+            head.prev = newNode;
+            newNode.next = head;
             head = newNode;
         } else if (index == size) {
-            tail.setNext(newNode);
-            newNode.setPrev(tail);
+            tail.next = newNode;
+            newNode.prev = tail;
             tail = newNode;
         } else {
             Node currentNode = head;
             for (int i = 0; i < index - 1; i++) {
-                currentNode = currentNode.getNext();
+                currentNode = currentNode.next;
             }
 
-            newNode.setPrev(currentNode);
-            newNode.setNext(currentNode.getNext());
-            currentNode.getNext().setPrev(newNode);
-            currentNode.setNext(newNode);
+            newNode.prev = currentNode;
+            newNode.next = currentNode.next;
+            currentNode.next.prev = newNode;
+            currentNode.next = newNode;
         }
         size++;
     }
@@ -65,26 +77,26 @@ public class LinkedList implements List {
                 tail = null;
                 head = null;
             } else {
-                head = currentNode.getNext();
-                head.setPrev(null);
+                head = currentNode.next;
+                head.prev = null;
             }
         } else if (index == size - 1) {
             removedNode = tail;
-            tail = tail.getPrev();
-            tail.setNext(null);
+            tail = tail.prev;
+            tail.next = null;
         } else {
             for (int i = 0; i < index - 1; i++) {
-                currentNode = currentNode.getNext();
+                currentNode = currentNode.next;
             }
-            removedNode = currentNode.getNext();
+            removedNode = currentNode.next;
 
-            currentNode.setNext(currentNode.getNext().getNext());
-            currentNode.getNext().setPrev(currentNode);
-            removedNode.setPrev(null);
-            removedNode.setNext(null);
+            currentNode.next = currentNode.next.next;
+            currentNode.next.prev = currentNode;
+            removedNode.prev = null;
+            removedNode.next = null;
         }
         size--;
-        return removedNode.getData();
+        return removedNode.data;
     }
 
     @Override
@@ -94,9 +106,9 @@ public class LinkedList implements List {
         }
         Node element = head;
         for (int i = 0; i < index; i++) {
-            element = element.getNext();
+            element = element.next;
         }
-        return element.getData();
+        return element.data;
     }
 
     @Override
@@ -109,10 +121,10 @@ public class LinkedList implements List {
         }
         Node element = head;
         for (int i = 0; i < index; i++) {
-            element = element.getNext();
+            element = element.next;
         }
-        Object toBeUpdated = element.getData();
-        element.setData(value);
+        Object toBeUpdated = element.data;
+        element.data = value;
         return toBeUpdated;
     }
 
@@ -176,11 +188,36 @@ public class LinkedList implements List {
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         Node current = head;
-        while (current != null) {
-            stringJoiner.add(current.getData().toString());
-            current = current.getNext();
+        while (current.next != null) {
+            stringJoiner.add(current.next.toString());
+            current = current.next;
         }
 
         return stringJoiner.toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new LinkedListIterator(this);
+    }
+
+    private static class LinkedListIterator implements Iterator {
+        Node current;
+
+        private LinkedListIterator(LinkedList linkedList) {
+            current = linkedList.head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Object next() {
+            Object data = current.data;
+            current = current.next;
+            return data;
+        }
     }
 }
