@@ -198,15 +198,11 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Iterator iterator() {
-        return new LinkedListIterator(this);
+        return new LinkedListIterator();
     }
 
-    private static class LinkedListIterator implements Iterator {
-        Node current;
-
-        private LinkedListIterator(LinkedList linkedList) {
-            current = linkedList.head;
-        }
+    private class LinkedListIterator implements Iterator {
+        private Node current = head;
 
         @Override
         public boolean hasNext() {
