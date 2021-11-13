@@ -1,9 +1,9 @@
 package com.company.datastructures.list.linkedlist;
 
 import com.company.datastructures.list.List;
+import com.company.datastructures.helper.DataStructureHelper;
 
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 public class LinkedList implements List, Iterable {
@@ -18,12 +18,8 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public void add(Object value, int index) {
-        if (Objects.isNull(value)) {
-            throw new IllegalStateException("Null element is not supported");
-        }
-        if (index < 0 || size < index) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
-        }
+        DataStructureHelper.throwIfNull(value);
+        DataStructureHelper.throwIfIndexOutOfBound(index, size);
 
         Node newNode = new Node();
         newNode.data = value;
@@ -54,9 +50,7 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
-        }
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
 
         Node currentNode = head;
         Node removedNode;
@@ -90,9 +84,8 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Object get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
-        }
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+
         Node element = head;
         for (int i = 0; i < index; i++) {
             element = element.next;
@@ -102,12 +95,9 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Object set(Object value, int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
-        }
-        if (Objects.isNull(value)) {
-            throw new IllegalStateException("Null is not supported");
-        }
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        DataStructureHelper.throwIfNull(value);
+
         Node element = head;
         for (int i = 0; i < index; i++) {
             element = element.next;
@@ -136,9 +126,8 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public boolean contains(Object value) {
-        if (Objects.isNull(value)) {
-            throw new IllegalStateException("Null is not supported");
-        }
+        DataStructureHelper.throwIfNull(value);
+
         if (isEmpty()) {
             return false;
         }
@@ -147,9 +136,7 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public int indexOf(Object value) {
-        if (Objects.isNull(value)) {
-            throw new IllegalStateException("Null is not supported");
-        }
+        DataStructureHelper.throwIfNull(value);
 
         for (int i = 0; i < size; i++) {
             if (get(i).equals(value)) {
@@ -161,9 +148,7 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (Objects.isNull(value)) {
-            throw new IllegalStateException("Null is not supported");
-        }
+        DataStructureHelper.throwIfNull(value);
 
         for (int i = size - 1; i >= 0; i--) {
             if (get(i).equals(value)) {

@@ -1,5 +1,7 @@
 package com.company.datastructures.stack;
 
+import com.company.datastructures.helper.DataStructureHelper;
+
 import java.util.Iterator;
 
 public class ArrayStack implements Stack, Iterable {
@@ -23,9 +25,7 @@ public class ArrayStack implements Stack, Iterable {
 
     @Override
     public Object pop() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Stack is empty!");
-        }
+        DataStructureHelper.throwIfEmpty(isEmpty());
         Object result = array[size - 1];
         size--;
         return result;

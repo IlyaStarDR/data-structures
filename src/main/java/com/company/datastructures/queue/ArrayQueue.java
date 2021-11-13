@@ -1,5 +1,7 @@
 package com.company.datastructures.queue;
 
+import com.company.datastructures.helper.DataStructureHelper;
+
 import java.util.Iterator;
 import java.util.StringJoiner;
 
@@ -17,15 +19,11 @@ public class ArrayQueue implements Queue, Iterable {
 
     @Override
     public void enqueue(Object value) {
-        if (value == null) {
-            throw new NullPointerException("Nulls are not supported");
-        }
+        DataStructureHelper.throwIfNull(value);
         resize();
         Object[] updatedQueue = new Object[size + 1];
         updatedQueue[0] = value;
-        for (int i = 0; i < size; i++) {
-            updatedQueue[i + 1] = queue[i];
-        }
+        System.arraycopy(queue, 0, updatedQueue, 1, size);
         queue = updatedQueue;
         size++;
     }
@@ -40,17 +38,13 @@ public class ArrayQueue implements Queue, Iterable {
 
     @Override
     public Object peek() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Queue is empty");
-        }
+        DataStructureHelper.throwIfEmpty(isEmpty());
         return queue[size - 1];
     }
 
     @Override
     public Object dequeue() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Queue is empty");
-        }
+        DataStructureHelper.throwIfEmpty(isEmpty());
         Object result = queue[size - 1];
         size--;
         return result;

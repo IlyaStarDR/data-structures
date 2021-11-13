@@ -1,6 +1,7 @@
 package com.company.datastructures.list.arraylist;
 
 import com.company.datastructures.list.List;
+import com.company.datastructures.helper.DataStructureHelper;
 
 import java.util.Iterator;
 import java.util.StringJoiner;
@@ -19,7 +20,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value) {
-        checkNull(value);
+        DataStructureHelper.throwIfNull(value);
         resize();
         list[size] = value;
         size++;
@@ -27,8 +28,8 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value, int index) {
-        checkNull(value);
-        checkIndex(index, size);
+        DataStructureHelper.throwIfNull(value);
+        DataStructureHelper.throwIfIndexOutOfBound(index, size);
         if (isEmpty()) {
             throw new IllegalStateException("List capacity is 0");
         }
@@ -40,7 +41,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
-        checkIndex(index, size + 1);
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         Object removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
         list[size - 1] = null;
@@ -50,7 +51,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object get(int index) {
-        checkIndex(index, size + 1);
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         if (isEmpty()) {
             return null;
         }
@@ -59,8 +60,8 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object set(Object value, int index) {
-        checkNull(value);
-        checkIndex(index, size + 1);
+        DataStructureHelper.throwIfNull(value);
+        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         Object toBeSet = list[index];
         list[index] = value;
         return toBeSet;
@@ -86,7 +87,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public boolean contains(Object value) {
-        checkNull(value);
+        DataStructureHelper.throwIfNull(value);
         if (isEmpty()) {
             return false;
         }
@@ -95,7 +96,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public int indexOf(Object value) {
-        checkNull(value);
+        DataStructureHelper.throwIfNull(value);
         for (int i = 0; i < size; i++) {
             if (list[i].equals(value)) {
                 return i;
@@ -106,7 +107,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public int lastIndexOf(Object value) {
-        checkNull(value);
+        DataStructureHelper.throwIfNull(value);
         for (int i = size - 1; i >= 0; i--) {
             if (list[i].equals(value)) {
                 return i;
@@ -134,18 +135,6 @@ public class ArrayList implements List, Iterable {
             Object[] toBeResized = new Object[(int) (list.length * 1.5)];
             System.arraycopy(list, 0, toBeResized, 0, list.length);
             list = toBeResized;
-        }
-    }
-    
-    private static void checkNull(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
-    }
-    
-    private static void checkIndex(int index, int size) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
     }
 
