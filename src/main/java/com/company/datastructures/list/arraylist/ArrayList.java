@@ -2,9 +2,10 @@ package com.company.datastructures.list.arraylist;
 
 import com.company.datastructures.list.List;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class ArrayList implements List {
+public class ArrayList implements List, Iterable {
     private int size;
     Object[] list;
 
@@ -150,4 +151,24 @@ public class ArrayList implements List {
         }
         return result.toString();
     }
+
+    @Override
+    public Iterator iterator() {
+        return new ArrayListIterator();
+    }
+
+    private class ArrayListIterator implements Iterator {
+        private int count;
+
+        @Override
+        public boolean hasNext() {
+            return count < size;
+        }
+
+        @Override
+        public Object next() {
+            return list[count++];
+        }
+    }
+
 }
