@@ -11,17 +11,6 @@ public class LinkedList implements List, Iterable {
     private Node head;
     private int size;
 
-    private static class Node {
-        private Object data;
-        private Node next;
-        private Node prev;
-
-        private Node() {
-            this.data = new Object();
-        }
-    }
-
-
     @Override
     public void add(Object value) {
         add(value, size);
@@ -199,6 +188,16 @@ public class LinkedList implements List, Iterable {
     @Override
     public Iterator iterator() {
         return new LinkedListIterator();
+    }
+
+    private static class Node {
+        private Object data;
+        private Node next;
+        private Node prev;
+
+        private Node() {
+            this.data = new Object();
+        }
     }
 
     private class LinkedListIterator implements Iterator {

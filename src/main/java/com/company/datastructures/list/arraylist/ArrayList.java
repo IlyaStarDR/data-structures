@@ -44,14 +44,6 @@ public class ArrayList implements List, Iterable {
         list[index] = value;
     }
 
-    private void resize() {
-        if (size == list.length) {
-            Object[] toBeResized = new Object[(int) (list.length * 1.5)];
-            System.arraycopy(list, 0, toBeResized, 0, list.length);
-            list = toBeResized;
-        }
-    }
-
     @Override
     public Object remove(int index) {
         if (index < 0 || index >= size) {
@@ -155,6 +147,14 @@ public class ArrayList implements List, Iterable {
     @Override
     public Iterator iterator() {
         return new ArrayListIterator();
+    }
+
+    private void resize() {
+        if (size == list.length) {
+            Object[] toBeResized = new Object[(int) (list.length * 1.5)];
+            System.arraycopy(list, 0, toBeResized, 0, list.length);
+            list = toBeResized;
+        }
     }
 
     private class ArrayListIterator implements Iterator {

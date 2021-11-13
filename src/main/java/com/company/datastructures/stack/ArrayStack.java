@@ -1,6 +1,8 @@
 package com.company.datastructures.stack;
 
-public class ArrayStack implements Stack {
+import java.util.Iterator;
+
+public class ArrayStack implements Stack, Iterable {
     private int size;
     private Object[] array;
 
@@ -17,14 +19,6 @@ public class ArrayStack implements Stack {
         resize();
         array[size] = value;
         size++;
-    }
-
-    private void resize() {
-        if (array.length == size) {
-            Object[] newArray = new Object[array.length * 2];
-            System.arraycopy(array, 0, newArray, 0, array.length);
-            array = newArray;
-        }
     }
 
     @Override
@@ -66,5 +60,32 @@ public class ArrayStack implements Stack {
     @Override
     public void clear() {
         size = 0;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new ArrayStackIterator();
+    }
+
+    private void resize() {
+        if (array.length == size) {
+            Object[] newArray = new Object[array.length * 2];
+            System.arraycopy(array, 0, newArray, 0, array.length);
+            array = newArray;
+        }
+    }
+
+    private class ArrayStackIterator implements Iterator {
+        private int count;
+
+        @Override
+        public boolean hasNext() {
+            return count < size;
+        }
+
+        @Override
+        public Object next() {
+            return array[count++];
+        }
     }
 }

@@ -1,8 +1,9 @@
 package com.company.datastructures.queue;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class ArrayQueue implements Queue {
+public class ArrayQueue implements Queue, Iterable {
     private int size;
     Object[] queue;
 
@@ -87,5 +88,24 @@ public class ArrayQueue implements Queue {
             result.add(queue[i].toString());
         }
         return result.toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new ArrayQueueIterator();
+    }
+
+    private class ArrayQueueIterator implements Iterator {
+       private int count;
+
+        @Override
+        public boolean hasNext() {
+            return count < size;
+        }
+
+        @Override
+        public Object next() {
+            return queue[count++];
+        }
     }
 }
