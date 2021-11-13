@@ -35,11 +35,7 @@ public class LinkedList implements List, Iterable {
             newNode.prev = tail;
             tail = newNode;
         } else {
-            Node currentNode = head;
-            for (int i = 0; i < index - 1; i++) {
-                currentNode = currentNode.next;
-            }
-
+            Node currentNode = getNode(index - 1);
             newNode.prev = currentNode;
             newNode.next = currentNode.next;
             currentNode.next.prev = newNode;
@@ -50,6 +46,7 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
 
         Node currentNode = head;
@@ -68,11 +65,8 @@ public class LinkedList implements List, Iterable {
             tail = tail.prev;
             tail.next = null;
         } else {
-            for (int i = 0; i < index - 1; i++) {
-                currentNode = currentNode.next;
-            }
+            currentNode = getNode(index - 1);
             removedNode = currentNode.next;
-
             currentNode.next = currentNode.next.next;
             currentNode.next.prev = currentNode;
             removedNode.prev = null;
@@ -84,26 +78,22 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public Object get(int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
-
-        Node element = head;
-        for (int i = 0; i < index; i++) {
-            element = element.next;
-        }
-        return element.data;
+        Node toBeGot = getNode(index);
+        return toBeGot.data;
     }
 
     @Override
     public Object set(Object value, int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         DataStructureHelper.throwIfNull(value);
 
-        Node element = head;
-        for (int i = 0; i < index; i++) {
-            element = element.next;
-        }
-        Object toBeUpdated = element.data;
-        element.data = value;
+        Node toBeSet = getNode(index);
+        Object toBeUpdated = toBeSet.data;
+        toBeSet.data = value;
+
         return toBeUpdated;
     }
 
@@ -173,6 +163,22 @@ public class LinkedList implements List, Iterable {
     @Override
     public Iterator iterator() {
         return new LinkedListIterator();
+    }
+
+    private Node getNode(int index) {
+        Node current;
+        if (size / 2 <= index) {
+            current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+        } else {
+            current = tail;
+            for (int i = 0; i < size - index - 1; i++) {
+                current = current.prev;
+            }
+        }
+        return current;
     }
 
     private static class Node {

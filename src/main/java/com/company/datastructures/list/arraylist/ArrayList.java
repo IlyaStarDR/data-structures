@@ -28,11 +28,9 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value, int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfNull(value);
         DataStructureHelper.throwIfIndexOutOfBound(index, size);
-        if (isEmpty()) {
-            throw new IllegalStateException("List capacity is 0");
-        }
         resize();
         System.arraycopy(list, index, list, index + 1, size - index);
         size++;
@@ -41,6 +39,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         Object removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
@@ -51,15 +50,14 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object get(int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
-        if (isEmpty()) {
-            return null;
-        }
         return list[index];
     }
 
     @Override
     public Object set(Object value, int index) {
+        DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfNull(value);
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         Object toBeSet = list[index];
@@ -88,9 +86,6 @@ public class ArrayList implements List, Iterable {
     @Override
     public boolean contains(Object value) {
         DataStructureHelper.throwIfNull(value);
-        if (isEmpty()) {
-            return false;
-        }
         return indexOf(value) != -1;
     }
 

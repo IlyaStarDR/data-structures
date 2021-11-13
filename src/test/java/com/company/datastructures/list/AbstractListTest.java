@@ -113,10 +113,10 @@ public abstract class AbstractListTest {
 
     @DisplayName("Test removing element from empty list")
     @Test
-    void testRemoveElementFromEmptyList() {
+    void testRemoveElementFromEmptyListThrowsIllegalStateException() {
 
         assertTrue(list.isEmpty(), "List is not empty");
-        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(0));
+        assertThrows(IllegalStateException.class, () -> list.remove(0));
     }
 
     @DisplayName("Test removing element from not empty list")
@@ -146,9 +146,9 @@ public abstract class AbstractListTest {
 
     @DisplayName("Test getting element from empty list")
     @Test
-    void testGetElementFromEmptyList() {
+    void testGetElementFromEmptyListThrowsIllegalStateException() {
 
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             list.get(0);
         });
     }
@@ -206,10 +206,10 @@ public abstract class AbstractListTest {
     }
 
 
-    @DisplayName("Test set element in empty list throws IndexOutOfBoundsException")
+    @DisplayName("Test set element in empty list throws IllegalStateException")
     @Test
-    void testSetElementEmptyListThrowsIndexOutOfBoundsException() {
-        assertThrows(IndexOutOfBoundsException.class, () -> {
+    void testSetElementEmptyListThrowsIllegalStateException() {
+        assertThrows(IllegalStateException.class, () -> {
             list.set("2", 0);
         });
     }
