@@ -6,7 +6,7 @@ import com.company.datastructures.list.List;
 public class LinkedListTest extends AbstractListTest {
 
     @Override
-    protected List getList() {
-        return new LinkedList();
+    protected List<Integer> getList() {
+        return new LinkedList<>();
     }
 }

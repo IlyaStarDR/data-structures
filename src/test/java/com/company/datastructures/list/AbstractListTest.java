@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractListTest {
-    private List list;
+    private final List<Integer> list;
 
     protected AbstractListTest() {
         list = getList();
     }
 
     @BeforeEach
-    protected abstract List getList();
+    protected abstract List<Integer> getList();
 
     @DisplayName("Test adding item to the list")
     @Test
@@ -210,7 +210,7 @@ public abstract class AbstractListTest {
     @Test
     void testSetElementEmptyListThrowsIllegalStateException() {
         assertThrows(IllegalStateException.class, () -> {
-            list.set("2", 0);
+            list.set(2, 0);
         });
     }
 

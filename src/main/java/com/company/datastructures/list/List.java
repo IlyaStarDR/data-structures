@@ -1,16 +1,16 @@
 package com.company.datastructures.list;
 
-public interface List {
+public interface List<T> {
 
-    void add(Object value);
+    void add(T value);
 
-    void add(Object value, int index);
+    void add(T value, int index);
 
-    Object remove(int index);
+    T remove(int index);
 
-    Object get(int index);
+    T get(int index);
 
-    Object set(Object value, int index);
+    T set(T value, int index);
 
     void clear();
 
@@ -18,9 +18,9 @@ public interface List {
 
     boolean isEmpty();
 
-    boolean contains(Object value);
+    boolean contains(T value);
 
-    int indexOf(Object value);
+    int indexOf(T value);
 
-    int lastIndexOf(Object value);
+    int lastIndexOf(T value);
 }

@@ -6,23 +6,22 @@ import com.company.datastructures.helper.DataStructureHelper;
 import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class LinkedList implements List, Iterable {
-    private Node tail;
-    private Node head;
+public class LinkedList<T> implements List<T>, Iterable<T> {
+    private Node<T> tail;
+    private Node<T> head;
     private int size;
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         add(value, size);
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         DataStructureHelper.throwIfNull(value);
         DataStructureHelper.throwIfIndexOutOfBound(index, size);
 
-        Node newNode = new Node();
-        newNode.data = value;
+        Node<T> newNode = new Node<>(value);
         if (size == 0) {
             head = newNode;
             tail = newNode;
@@ -35,7 +34,7 @@ public class LinkedList implements List, Iterable {
             newNode.prev = tail;
             tail = newNode;
         } else {
-            Node currentNode = getNode(index - 1);
+            Node<T> currentNode = getNode(index - 1);
             newNode.prev = currentNode;
             newNode.next = currentNode.next;
             currentNode.next.prev = newNode;
@@ -45,12 +44,12 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
 
-        Node currentNode = head;
-        Node removedNode;
+        Node<T> currentNode = head;
+        Node<T> removedNode;
         if (index == 0) {
             removedNode = head;
             if (size == 1) {
@@ -77,21 +76,21 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
-        Node toBeGot = getNode(index);
+        Node<T> toBeGot = getNode(index);
         return toBeGot.data;
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public T set(T value, int index) {
         DataStructureHelper.throwIfEmpty(isEmpty());
         DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
         DataStructureHelper.throwIfNull(value);
 
-        Node toBeSet = getNode(index);
-        Object toBeUpdated = toBeSet.data;
+        Node<T> toBeSet = getNode(index);
+        T toBeUpdated = toBeSet.data;
         toBeSet.data = value;
 
         return toBeUpdated;
@@ -115,7 +114,7 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public boolean contains(Object value) {
+    public boolean contains(T value) {
         DataStructureHelper.throwIfNull(value);
 
         if (isEmpty()) {
@@ -151,7 +150,7 @@ public class LinkedList implements List, Iterable {
     @Override
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
-        Node current = head;
+        Node<T> current = head;
         while (current.next != null) {
             stringJoiner.add(current.next.toString());
             current = current.next;
@@ -161,12 +160,12 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
 
-    private Node getNode(int index) {
-        Node current;
+    private Node<T> getNode(int index) {
+        Node<T> current;
         if (size / 2 <= index) {
             current = head;
             for (int i = 0; i < index; i++) {
@@ -181,18 +180,18 @@ public class LinkedList implements List, Iterable {
         return current;
     }
 
-    private static class Node {
-        private Object data;
-        private Node next;
-        private Node prev;
+    private static class Node<T> {
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
 
-        private Node() {
-            this.data = new Object();
+        private Node(T data) {
+            this.data = data;
         }
     }
 
-    private class LinkedListIterator implements Iterator {
-        private Node current = head;
+    private class LinkedListIterator implements Iterator<T> {
+        private Node<T> current = head;
 
         @Override
         public boolean hasNext() {
@@ -200,8 +199,8 @@ public class LinkedList implements List, Iterable {
         }
 
         @Override
-        public Object next() {
-            Object data = current.data;
+        public T next() {
+            T data = current.data;
             current = current.next;
             return data;
         }
