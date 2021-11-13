@@ -19,9 +19,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
+        checkNull(value);
         resize();
         list[size] = value;
         size++;
@@ -29,12 +27,8 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value, int index) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
-        if (index < 0 || size < index) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkNull(value);
+        checkIndex(index, size);
         if (isEmpty()) {
             throw new IllegalStateException("List capacity is 0");
         }
@@ -46,9 +40,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index is out of bounds");
-        }
+        checkIndex(index, size + 1);
         Object removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
         list[size - 1] = null;
@@ -58,9 +50,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(index, size + 1);
         if (isEmpty()) {
             return null;
         }
@@ -69,12 +59,8 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object set(Object value, int index) {
-        if (index < 0 || size <= index) {
-            throw new IndexOutOfBoundsException();
-        }
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
+        checkNull(value);
+        checkIndex(index, size + 1);
         Object toBeSet = list[index];
         list[index] = value;
         return toBeSet;
@@ -100,9 +86,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public boolean contains(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
+        checkNull(value);
         if (isEmpty()) {
             return false;
         }
@@ -111,9 +95,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public int indexOf(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
+        checkNull(value);
         for (int i = 0; i < size; i++) {
             if (list[i].equals(value)) {
                 return i;
@@ -124,9 +106,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (value == null) {
-            throw new IllegalStateException("Null element is not supported");
-        }
+        checkNull(value);
         for (int i = size - 1; i >= 0; i--) {
             if (list[i].equals(value)) {
                 return i;
@@ -156,6 +136,18 @@ public class ArrayList implements List, Iterable {
             list = toBeResized;
         }
     }
+    
+    private static void checkNull(Object value) {
+        if (value == null) {
+            throw new IllegalStateException("Null element is not supported");
+        }
+    }
+    
+    private static void checkIndex(int index, int size) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
+        }
+    }
 
     private class ArrayListIterator implements Iterator {
         private int count;
@@ -170,5 +162,4 @@ public class ArrayList implements List, Iterable {
             return list[count++];
         }
     }
-
 }
