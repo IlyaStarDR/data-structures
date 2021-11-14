@@ -1,12 +1,13 @@
 package com.company.datastructures.list.linkedlist;
 
 import com.company.datastructures.list.List;
-import com.company.datastructures.helper.DataStructureHelper;
+import com.company.datastructures.helper.Objects;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public class LinkedList<T> implements List<T>, Iterable<T> {
+public class LinkedList<T> implements List<T> {
     private Node<T> tail;
     private Node<T> head;
     private int size;
@@ -18,8 +19,8 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public void add(T value, int index) {
-        DataStructureHelper.throwIfNull(value);
-        DataStructureHelper.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfNull(value);
+        Objects.throwIfIndexOutOfBound(index, size);
 
         Node<T> newNode = new Node<>(value);
         if (size == 0) {
@@ -45,8 +46,8 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public T remove(int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfIndexOutOfBound(index, size + 1);
 
         Node<T> currentNode = head;
         Node<T> removedNode;
@@ -77,17 +78,17 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public T get(int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfIndexOutOfBound(index, size + 1);
         Node<T> toBeGot = getNode(index);
         return toBeGot.data;
     }
 
     @Override
     public T set(T value, int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfNull(value);
 
         Node<T> toBeSet = getNode(index);
         T toBeUpdated = toBeSet.data;
@@ -115,7 +116,7 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public boolean contains(T value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
 
         if (isEmpty()) {
             return false;
@@ -125,7 +126,7 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public int indexOf(Object value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
 
         for (int i = 0; i < size; i++) {
             if (get(i).equals(value)) {
@@ -137,7 +138,7 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public int lastIndexOf(Object value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
 
         for (int i = size - 1; i >= 0; i--) {
             if (get(i).equals(value)) {
@@ -151,8 +152,8 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         Node<T> current = head;
-        while (current.next != null) {
-            stringJoiner.add(current.next.toString());
+        while (current != null) {
+            stringJoiner.add(current.data.toString());
             current = current.next;
         }
 
@@ -188,21 +189,48 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
         private Node(T data) {
             this.data = data;
         }
+
+        @Override
+        public String toString() {
+            return data.toString();
+        }
     }
 
     private class LinkedListIterator implements Iterator<T> {
-        private Node<T> current = head;
+        private Node<T> next;
+        private boolean nextCalled;
+        private int index;
+
+        public LinkedListIterator() {
+            next = head;
+            index = -1;
+        }
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return next != null;
         }
 
         @Override
         public T next() {
-            T data = current.data;
-            current = current.next;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T data = next.data;
+            next = next.next;
+            nextCalled = true;
+            index++;
             return data;
+        }
+
+        @Override
+        public void remove() {
+            if (!nextCalled) {
+                throw new IllegalStateException();
+            }
+            LinkedList.this.remove(index);
+            index--;
+            nextCalled = false;
         }
     }
 }

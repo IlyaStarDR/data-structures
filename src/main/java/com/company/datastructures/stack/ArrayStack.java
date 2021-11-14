@@ -1,8 +1,9 @@
 package com.company.datastructures.stack;
 
-import com.company.datastructures.helper.DataStructureHelper;
+import com.company.datastructures.helper.Objects;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayStack implements Stack, Iterable {
     private int size;
@@ -18,14 +19,14 @@ public class ArrayStack implements Stack, Iterable {
 
     @Override
     public void push(Object value) {
-        resize();
+        ensureCapacity();
         array[size] = value;
         size++;
     }
 
     @Override
     public Object pop() {
-        DataStructureHelper.throwIfEmpty(isEmpty());
+        Objects.throwIfEmpty(isEmpty());
         Object result = array[size - 1];
         size--;
         return result;
@@ -67,7 +68,7 @@ public class ArrayStack implements Stack, Iterable {
         return new ArrayStackIterator();
     }
 
-    private void resize() {
+    private void ensureCapacity() {
         if (array.length == size) {
             Object[] newArray = new Object[array.length * 2];
             System.arraycopy(array, 0, newArray, 0, array.length);
@@ -76,16 +77,33 @@ public class ArrayStack implements Stack, Iterable {
     }
 
     private class ArrayStackIterator implements Iterator {
-        private int count;
+        private int index;
+        private boolean nextCalled;
 
         @Override
         public boolean hasNext() {
-            return count < size;
+            return index < size;
         }
 
         @Override
         public Object next() {
-            return array[count++];
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            nextCalled = true;
+            return array[index++];
+        }
+
+        @Override
+        public void remove() {
+            if (!nextCalled) {
+                throw new IllegalStateException();
+            }
+            System.arraycopy(array, index, array, index, size - index);
+            array[size - 1] = null;
+            index--;
+            size--;
+            nextCalled = false;
         }
     }
 }

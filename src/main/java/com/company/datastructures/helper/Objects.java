@@ -1,6 +1,6 @@
 package com.company.datastructures.helper;
 
-public final class DataStructureHelper {
+public final class Objects {
     public static void throwIfNull(Object value) {
         if (value == null) {
             throw new IllegalStateException("Null element is not supported");

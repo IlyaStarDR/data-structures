@@ -1,18 +1,15 @@
 package com.company.datastructures.list.arraylist;
 
 import com.company.datastructures.list.List;
-import com.company.datastructures.helper.DataStructureHelper;
+import com.company.datastructures.helper.Objects;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public class ArrayList implements List, Iterable {
+public class ArrayList implements List {
     private int size;
     Object[] list;
-
-    public ArrayList(int capacity) {
-        list = new Object[capacity];
-    }
 
     public ArrayList() {
         list = new Object[5];
@@ -20,18 +17,18 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public void add(Object value) {
-        DataStructureHelper.throwIfNull(value);
-        resize();
+        Objects.throwIfNull(value);
+        ensureCapacity();
         list[size] = value;
         size++;
     }
 
     @Override
     public void add(Object value, int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfNull(value);
-        DataStructureHelper.throwIfIndexOutOfBound(index, size);
-        resize();
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfNull(value);
+        Objects.throwIfIndexOutOfBound(index, size);
+        ensureCapacity();
         System.arraycopy(list, index, list, index + 1, size - index);
         size++;
         list[index] = value;
@@ -39,8 +36,8 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object remove(int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfIndexOutOfBound(index, size + 1);
         Object removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
         list[size - 1] = null;
@@ -50,16 +47,16 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public Object get(int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfIndexOutOfBound(index, size + 1);
         return list[index];
     }
 
     @Override
     public Object set(Object value, int index) {
-        DataStructureHelper.throwIfEmpty(isEmpty());
-        DataStructureHelper.throwIfNull(value);
-        DataStructureHelper.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfEmpty(isEmpty());
+        Objects.throwIfNull(value);
+        Objects.throwIfIndexOutOfBound(index, size + 1);
         Object toBeSet = list[index];
         list[index] = value;
         return toBeSet;
@@ -85,13 +82,13 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public boolean contains(Object value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
         return indexOf(value) != -1;
     }
 
     @Override
     public int indexOf(Object value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
         for (int i = 0; i < size; i++) {
             if (list[i].equals(value)) {
                 return i;
@@ -102,7 +99,7 @@ public class ArrayList implements List, Iterable {
 
     @Override
     public int lastIndexOf(Object value) {
-        DataStructureHelper.throwIfNull(value);
+        Objects.throwIfNull(value);
         for (int i = size - 1; i >= 0; i--) {
             if (list[i].equals(value)) {
                 return i;
@@ -125,7 +122,7 @@ public class ArrayList implements List, Iterable {
         return new ArrayListIterator();
     }
 
-    private void resize() {
+    private void ensureCapacity() {
         if (size == list.length) {
             Object[] toBeResized = new Object[(int) (list.length * 1.5)];
             System.arraycopy(list, 0, toBeResized, 0, list.length);
@@ -134,16 +131,31 @@ public class ArrayList implements List, Iterable {
     }
 
     private class ArrayListIterator implements Iterator {
-        private int count;
+        private int index;
+        private boolean nextCalled;
 
         @Override
         public boolean hasNext() {
-            return count < size;
+            return index < size;
         }
 
         @Override
         public Object next() {
-            return list[count++];
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            nextCalled = true;
+            return list[index++];
+        }
+
+        @Override
+        public void remove() {
+            if (!nextCalled) {
+                throw new IllegalStateException();
+            }
+            ArrayList.this.remove(index - 1);
+            index--;
+            nextCalled = false;
         }
     }
 }

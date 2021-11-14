@@ -1,6 +1,6 @@
 package com.company.datastructures.queue;
 
-public interface Queue {
+public interface Queue extends Iterable{
 
     void enqueue(Object value);
 

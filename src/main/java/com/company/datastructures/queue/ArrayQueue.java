@@ -1,11 +1,12 @@
 package com.company.datastructures.queue;
 
-import com.company.datastructures.helper.DataStructureHelper;
+import com.company.datastructures.helper.Objects;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public class ArrayQueue implements Queue, Iterable {
+public class ArrayQueue implements Queue {
     private int size;
     Object[] queue;
 
@@ -19,32 +20,24 @@ public class ArrayQueue implements Queue, Iterable {
 
     @Override
     public void enqueue(Object value) {
-        DataStructureHelper.throwIfNull(value);
-        resize();
+        Objects.throwIfNull(value);
+        ensureCapacity();
         Object[] updatedQueue = new Object[size + 1];
         updatedQueue[0] = value;
         System.arraycopy(queue, 0, updatedQueue, 1, size);
         queue = updatedQueue;
         size++;
     }
-
-    private void resize() {
-        if (size == queue.length) {
-            Object[] toBeResized = new Object[queue.length * 2];
-            System.arraycopy(queue, 0, toBeResized, 0, queue.length);
-            queue = toBeResized;
-        }
-    }
-
+    
     @Override
     public Object peek() {
-        DataStructureHelper.throwIfEmpty(isEmpty());
+        Objects.throwIfEmpty(isEmpty());
         return queue[size - 1];
     }
 
     @Override
     public Object dequeue() {
-        DataStructureHelper.throwIfEmpty(isEmpty());
+        Objects.throwIfEmpty(isEmpty());
         Object result = queue[size - 1];
         size--;
         return result;
@@ -89,17 +82,43 @@ public class ArrayQueue implements Queue, Iterable {
         return new ArrayQueueIterator();
     }
 
+    private void ensureCapacity() {
+        if (size == queue.length) {
+            Object[] toBeResized = new Object[queue.length * 2];
+            System.arraycopy(queue, 0, toBeResized, 0, queue.length);
+            queue = toBeResized;
+        }
+    }
+
+
     private class ArrayQueueIterator implements Iterator {
-       private int count;
+        private int index;
+        private boolean nextCalled;
 
         @Override
         public boolean hasNext() {
-            return count < size;
+            return index < size;
         }
 
         @Override
         public Object next() {
-            return queue[count++];
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            nextCalled = true;
+            return queue[index++];
+        }
+
+        @Override
+        public void remove() {
+            if (!nextCalled) {
+                throw new IllegalStateException();
+            }
+            System.arraycopy(queue, index, queue, index, size - index);
+            queue[size - 1] = null;
+            index--;
+            size--;
+            nextCalled = false;
         }
     }
 }

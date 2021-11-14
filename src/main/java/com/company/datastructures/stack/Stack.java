@@ -1,6 +1,6 @@
 package com.company.datastructures.stack;
 
-public interface Stack {
+public interface Stack extends Iterable{
 
     void push(Object value);
 
@@ -15,5 +15,4 @@ public interface Stack {
     boolean isEmpty();
 
     void clear();
-
 }

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -329,4 +332,81 @@ public abstract class AbstractListTest {
         assertEquals(-1, list.indexOf(-1));
         assertEquals(-1, list.indexOf(7));
     }
+
+    @DisplayName("Iterator hasNext on empty list returns false")
+    @Test
+    void testIteratorHasNextReturnFalseOnEmptyList() {
+        Iterator<Integer> iterator = list.iterator();
+        assertFalse(iterator.hasNext(), "List has next value");
+    }
+
+    @DisplayName("Iterator hasNext returns true on not empty list")
+    @Test
+    void testIteratorHasNextReturnTrueOnNotEmptyList() {
+        list.add(2);
+        Iterator<Integer> iterator = list.iterator();
+        assertTrue(iterator.hasNext(), "List has not next value");
+    }
+
+    @DisplayName("Iterator next throws on empty list")
+    @Test
+    void testIteratorNextThrowsOnEmptyList() {
+        Iterator<Integer> iterator = list.iterator();
+        assertThrows(NoSuchElementException.class, () -> {
+            iterator.next();
+        });
+    }
+
+    @DisplayName("Iterator next returns element on not empty list")
+    @Test
+    void testIteratorNextReturnsElementOnNotEmptyList() {
+        list.add(2);
+        list.add(3);
+        Iterator<Integer> iterator = list.iterator();
+        assertTrue(iterator.hasNext(), "List has not next value");
+        assertEquals(list.get(0), iterator.next(), "Elements differ");
+        assertTrue(iterator.hasNext(), "List has not next value");
+        assertEquals(list.get(1), iterator.next(), "Elements differ");
+        assertFalse(iterator.hasNext(), "List has next value");
+    }
+
+    @DisplayName("Iterator remove throws if next method not called")
+    @Test
+    void testIteratorRemoveThrowsIfNextMethodNotCalled() {
+        Iterator<Integer> iterator = list.iterator();
+        assertThrows(IllegalStateException.class, () -> {
+            iterator.remove();
+        });
+    }
+
+    @DisplayName("Iterator remove element if next method called")
+    @Test
+    void testIteratorRemoveElementIfNextMethodCalled() {
+        list.add(2);
+        list.add(3);
+        Iterator<Integer> iterator = list.iterator();
+        assertTrue(iterator.hasNext(), "List has not next value");
+        iterator.next();
+        iterator.remove();
+        assertEquals(1, list.size(), "Size differs");
+        assertTrue(iterator.hasNext(), "List has not next value");
+        iterator.next();
+        iterator.remove();
+        assertEquals(0, list.size(), "Size differs");
+        assertFalse(iterator.hasNext(), "List has next value");
+    }
+
+    @DisplayName("Iterator remove throws if method called twice")
+    @Test
+    void testIteratorRemoveThrowsIfRemoveCalledTwice() {
+        list.add(2);
+        Iterator<Integer> iterator = list.iterator();
+        assertTrue(iterator.hasNext(), "List has not next value");
+        iterator.next();
+        iterator.remove();
+        assertThrows(IllegalStateException.class, () -> {
+            iterator.remove();
+        });
+    }
+
 }
