@@ -151,12 +151,9 @@ public class LinkedList<T> implements List<T> {
     @Override
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
-        Node<T> current = head;
-        while (current != null) {
-            stringJoiner.add(current.data.toString());
-            current = current.next;
+        for (T element : LinkedList.this) {
+            stringJoiner.add((CharSequence) element);
         }
-
         return stringJoiner.toString();
     }
 

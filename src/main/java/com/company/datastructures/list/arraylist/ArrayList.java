@@ -7,16 +7,16 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public class ArrayList implements List {
+public class ArrayList<T> implements List<T> {
     private int size;
-    Object[] list;
+    T[] list;
 
     public ArrayList() {
-        list = new Object[5];
+        list = (T[]) new Object[5];
     }
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         Objects.throwIfNull(value);
         ensureCapacity();
         list[size] = value;
@@ -24,7 +24,7 @@ public class ArrayList implements List {
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         Objects.throwIfEmpty(isEmpty());
         Objects.throwIfNull(value);
         Objects.throwIfIndexOutOfBound(index, size);
@@ -35,10 +35,10 @@ public class ArrayList implements List {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         Objects.throwIfEmpty(isEmpty());
         Objects.throwIfIndexOutOfBound(index, size + 1);
-        Object removedElement = list[index];
+        T removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
         list[size - 1] = null;
         size--;
@@ -46,18 +46,18 @@ public class ArrayList implements List {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         Objects.throwIfEmpty(isEmpty());
         Objects.throwIfIndexOutOfBound(index, size + 1);
         return list[index];
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public T set(T value, int index) {
         Objects.throwIfEmpty(isEmpty());
         Objects.throwIfNull(value);
         Objects.throwIfIndexOutOfBound(index, size + 1);
-        Object toBeSet = list[index];
+        T toBeSet = list[index];
         list[index] = value;
         return toBeSet;
     }
@@ -81,13 +81,13 @@ public class ArrayList implements List {
     }
 
     @Override
-    public boolean contains(Object value) {
+    public boolean contains(T value) {
         Objects.throwIfNull(value);
         return indexOf(value) != -1;
     }
 
     @Override
-    public int indexOf(Object value) {
+    public int indexOf(T value) {
         Objects.throwIfNull(value);
         for (int i = 0; i < size; i++) {
             if (list[i].equals(value)) {
@@ -98,7 +98,7 @@ public class ArrayList implements List {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
+    public int lastIndexOf(T value) {
         Objects.throwIfNull(value);
         for (int i = size - 1; i >= 0; i--) {
             if (list[i].equals(value)) {
@@ -111,26 +111,26 @@ public class ArrayList implements List {
     @Override
     public String toString() {
         StringJoiner result = new StringJoiner(",", "[", "]");
-        for (int i = 0; i < size; i++) {
-            result.add(list[i].toString());
+        for (T element : ArrayList.this) {
+            result.add((CharSequence) element);
         }
         return result.toString();
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new ArrayListIterator();
     }
 
     private void ensureCapacity() {
         if (size == list.length) {
-            Object[] toBeResized = new Object[(int) (list.length * 1.5)];
+            T[] toBeResized = (T[]) new Object[(int) (list.length * 1.5)];
             System.arraycopy(list, 0, toBeResized, 0, list.length);
             list = toBeResized;
         }
     }
 
-    private class ArrayListIterator implements Iterator {
+    private class ArrayListIterator implements Iterator<T> {
         private int index;
         private boolean nextCalled;
 
@@ -140,7 +140,7 @@ public class ArrayList implements List {
         }
 
         @Override
-        public Object next() {
+        public T next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
