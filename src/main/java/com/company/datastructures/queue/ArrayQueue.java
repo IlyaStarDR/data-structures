@@ -1,7 +1,5 @@
 package com.company.datastructures.queue;
 
-import com.company.datastructures.helper.Objects;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringJoiner;
@@ -30,13 +28,11 @@ public class ArrayQueue implements Queue {
     
     @Override
     public Object peek() {
-        Objects.throwIfEmpty(isEmpty());
         return queue[size - 1];
     }
 
     @Override
     public Object dequeue() {
-        Objects.throwIfEmpty(isEmpty());
         Object result = queue[size - 1];
         size--;
         return result;

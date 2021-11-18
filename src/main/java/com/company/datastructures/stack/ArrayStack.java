@@ -1,7 +1,5 @@
 package com.company.datastructures.stack;
 
-import com.company.datastructures.helper.Objects;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -26,7 +24,6 @@ public class ArrayStack implements Stack, Iterable {
 
     @Override
     public Object pop() {
-        Objects.throwIfEmpty(isEmpty());
         Object result = array[size - 1];
         size--;
         return result;

@@ -19,7 +19,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size);
 
         Node<T> newNode = new Node<>(value);
         if (size == 0) {
@@ -45,8 +45,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
 
         Node<T> currentNode = head;
         Node<T> removedNode;
@@ -77,16 +76,14 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
         Node<T> toBeGot = getNode(index);
         return toBeGot.data;
     }
 
     @Override
     public T set(T value, int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
 
         Node<T> toBeSet = getNode(index);
         T toBeUpdated = toBeSet.data;

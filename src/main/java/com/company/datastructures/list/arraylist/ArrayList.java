@@ -24,7 +24,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size);
         ensureCapacity();
         System.arraycopy(list, index, list, index + 1, size - index);
         size++;
@@ -33,8 +33,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
         T removedElement = list[index];
         System.arraycopy(list, index + 1, list, index, size - index - 1);
         list[size - 1] = null;
@@ -44,15 +43,13 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
         return list[index];
     }
 
     @Override
     public T set(T value, int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size - 1);
         T toBeSet = list[index];
         list[index] = value;
         return toBeSet;
