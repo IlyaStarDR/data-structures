@@ -153,7 +153,7 @@ public class LinkedList<T> implements List<T> {
     public String toString() {
         StringJoiner stringJoiner = new StringJoiner(", ", "[", "]");
         for (T element : LinkedList.this) {
-            stringJoiner.add((CharSequence) element);
+            stringJoiner.add(element.toString());
         }
         return stringJoiner.toString();
     }
@@ -190,18 +190,17 @@ public class LinkedList<T> implements List<T> {
     }
 
     private class LinkedListIterator implements Iterator<T> {
-        private Node<T> next;
+        private Node<T> current;
         private Node<T> lastReturned;
         private boolean nextCalled;
-        private int index;
 
         public LinkedListIterator() {
-            next = head;
+            current = head;
         }
 
         @Override
         public boolean hasNext() {
-            return next != null;
+            return current != null;
         }
 
         @Override
@@ -209,11 +208,10 @@ public class LinkedList<T> implements List<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            T data = next.data;
-            lastReturned = next;
-            next = next.next;
+            T data = current.data;
+            lastReturned = current;
+            current = current.next;
             nextCalled = true;
-            index++;
             return data;
         }
 
@@ -222,13 +220,24 @@ public class LinkedList<T> implements List<T> {
             if (!nextCalled) {
                 throw new IllegalStateException();
             }
-//            LinkedList.this.remove(index - 1);
-
-            index--;
+            if (lastReturned.prev == null && lastReturned.next == null) {
+                head = null;
+                tail = null;
+            }
+            else if (lastReturned.prev == null) {
+                head = lastReturned.next;
+                head.prev = null;
+            } else if (lastReturned.next == null) {
+                tail = lastReturned.prev;
+                tail.next = null;
+            } else {
+                lastReturned.prev.next = lastReturned.next;
+                lastReturned.next.prev = lastReturned.prev;
+                lastReturned.prev = null;
+                lastReturned.next = null;
+            }
+            size--;
             nextCalled = false;
         }
-    }
-
-    public static void main(String[] args) {
     }
 }

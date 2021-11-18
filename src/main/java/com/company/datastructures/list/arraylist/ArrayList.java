@@ -117,7 +117,7 @@ public class ArrayList<T> implements List<T> {
     public String toString() {
         StringJoiner result = new StringJoiner(",", "[", "]");
         for (T element : ArrayList.this) {
-            result.add((CharSequence) element);
+            result.add(element.toString());
         }
         return result.toString();
     }
@@ -158,8 +158,10 @@ public class ArrayList<T> implements List<T> {
             if (!nextCalled) {
                 throw new IllegalStateException();
             }
-            ArrayList.this.remove(index - 1);
             index--;
+            System.arraycopy(list, index + 1, list, index, size - index - 1);
+            list[size - 1] = null;
+            size--;
             nextCalled = false;
         }
     }
