@@ -17,7 +17,6 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T value) {
-        Objects.throwIfNull(value);
         ensureCapacity();
         list[size] = value;
         size++;
@@ -25,9 +24,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfNull(value);
-        Objects.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfIndexOutOfBound(index, size + 1);
         ensureCapacity();
         System.arraycopy(list, index, list, index + 1, size - index);
         size++;
@@ -55,7 +52,6 @@ public class ArrayList<T> implements List<T> {
     @Override
     public T set(T value, int index) {
         Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfNull(value);
         Objects.throwIfIndexOutOfBound(index, size + 1);
         T toBeSet = list[index];
         list[index] = value;
@@ -82,16 +78,22 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public boolean contains(T value) {
-        Objects.throwIfNull(value);
         return indexOf(value) != -1;
     }
 
     @Override
     public int indexOf(T value) {
-        Objects.throwIfNull(value);
-        for (int i = 0; i < size; i++) {
-            if (list[i].equals(value)) {
-                return i;
+        if (value == null) {
+            for (int i = 0; i < size; i++) {
+                if (list[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (list[i].equals(value)) {
+                    return i;
+                }
             }
         }
         return -1;
@@ -99,10 +101,17 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(T value) {
-        Objects.throwIfNull(value);
-        for (int i = size - 1; i >= 0; i--) {
-            if (list[i].equals(value)) {
-                return i;
+        if (value == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (list[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (list[i].equals(value)) {
+                    return i;
+                }
             }
         }
         return -1;

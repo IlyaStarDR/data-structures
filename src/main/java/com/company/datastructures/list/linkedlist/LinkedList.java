@@ -19,8 +19,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        Objects.throwIfNull(value);
-        Objects.throwIfIndexOutOfBound(index, size);
+        Objects.throwIfIndexOutOfBound(index, size + 1);
 
         Node<T> newNode = new Node<>(value);
         if (size == 0) {
@@ -47,7 +46,7 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T remove(int index) {
         Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size);
 
         Node<T> currentNode = head;
         Node<T> removedNode;
@@ -79,7 +78,7 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T get(int index) {
         Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
+        Objects.throwIfIndexOutOfBound(index, size);
         Node<T> toBeGot = getNode(index);
         return toBeGot.data;
     }
@@ -87,8 +86,7 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T set(T value, int index) {
         Objects.throwIfEmpty(isEmpty());
-        Objects.throwIfIndexOutOfBound(index, size + 1);
-        Objects.throwIfNull(value);
+        Objects.throwIfIndexOutOfBound(index, size);
 
         Node<T> toBeSet = getNode(index);
         T toBeUpdated = toBeSet.data;
@@ -116,8 +114,6 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public boolean contains(T value) {
-        Objects.throwIfNull(value);
-
         if (isEmpty()) {
             return false;
         }
@@ -125,21 +121,32 @@ public class LinkedList<T> implements List<T> {
     }
 
     @Override
-    public int indexOf(Object value) {
-        Objects.throwIfNull(value);
-
-        for (int i = 0; i < size; i++) {
-            if (get(i).equals(value)) {
-                return i;
+    public int indexOf(T value) {
+        if (value == null) {
+            for (int i = 0; i < size; i++) {
+                if (get(i) == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (get(i).equals(value)) {
+                    return i;
+                }
             }
         }
         return -1;
     }
 
     @Override
-    public int lastIndexOf(Object value) {
-        Objects.throwIfNull(value);
-
+    public int lastIndexOf(T value) {
+        if (value == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (get(i) == null) {
+                    return i;
+                }
+            }
+        }
         for (int i = size - 1; i >= 0; i--) {
             if (get(i).equals(value)) {
                 return i;

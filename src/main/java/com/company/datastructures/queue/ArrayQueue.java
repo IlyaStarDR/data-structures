@@ -20,7 +20,6 @@ public class ArrayQueue implements Queue {
 
     @Override
     public void enqueue(Object value) {
-        Objects.throwIfNull(value);
         ensureCapacity();
         Object[] updatedQueue = new Object[size + 1];
         updatedQueue[0] = value;

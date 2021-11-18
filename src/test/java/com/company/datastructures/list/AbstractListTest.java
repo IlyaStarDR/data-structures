@@ -28,12 +28,11 @@ public abstract class AbstractListTest {
         assertEquals(expectedIndex, list.lastIndexOf(1), "Element is not added to the end");
     }
 
-    @DisplayName("Test adding null item to the end should throw IllegalStateException")
+    @DisplayName("Test adding null item to the end")
     @Test
     void testAddItemNullThrowsIllegalStateException() {
-        assertThrows(IllegalStateException.class, () -> {
-            list.add(null);
-        });
+        list.add(null);
+        assertNull(list.get(0), "Element not null");
     }
 
     @DisplayName("Test adding and removing item to the list with resizing")
@@ -55,15 +54,6 @@ public abstract class AbstractListTest {
         assertEquals(5, actualThirdRemoved, "Elements do not match");
         assertEquals(0, list.size(), "Size differs");
         assertTrue(list.isEmpty(), "List is not empty");
-    }
-
-    @DisplayName("Test adding null element by index throws IllegalStateException")
-    @Test
-    void testAddByIndexNullElementThrowIllegalStateException() {
-        list.add(2);
-        assertThrows(IllegalStateException.class, () -> {
-            list.add(null, 1);
-        });
     }
 
     @DisplayName("Test adding element by index out of bound range")
@@ -114,12 +104,12 @@ public abstract class AbstractListTest {
         });
     }
 
-    @DisplayName("Test removing element from empty list")
+    @DisplayName("Test removing element from empty list throws IndexOutOfBoundsException")
     @Test
-    void testRemoveElementFromEmptyListThrowsIllegalStateException() {
+    void testRemoveElementFromEmptyListThrowsIndexOutOfBoundsException() {
 
         assertTrue(list.isEmpty(), "List is not empty");
-        assertThrows(IllegalStateException.class, () -> list.remove(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.remove(0));
     }
 
     @DisplayName("Test removing element from not empty list")
@@ -147,11 +137,10 @@ public abstract class AbstractListTest {
         });
     }
 
-    @DisplayName("Test getting element from empty list")
+    @DisplayName("Test getting element from empty list throws IndexOutOfBoundsException")
     @Test
-    void testGetElementFromEmptyListThrowsIllegalStateException() {
-
-        assertThrows(IllegalStateException.class, () -> {
+    void testGetElementFromEmptyListThrowsIndexOutOfBoundsException() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
             list.get(0);
         });
     }
@@ -188,12 +177,11 @@ public abstract class AbstractListTest {
         assertFalse(list.contains(100), "List contains such element");
     }
 
-    @DisplayName("Test not empty list contains null returns throws")
+    @DisplayName("Test not empty list contains null returns true")
     @Test
-    void testNotEmptyListContainsNullThrowsIllegalStateException() {
-
-        list.add(5);
-        assertThrows(IllegalStateException.class, () -> list.contains(null));
+    void testNotEmptyListContainsNullReturnsTrue() {
+        list.add(null);
+        assertTrue(list.contains(null), "Do not contains");
     }
 
     @DisplayName("Test after clear list size should be 0")
@@ -209,23 +197,19 @@ public abstract class AbstractListTest {
     }
 
 
-    @DisplayName("Test set element in empty list throws IllegalStateException")
+    @DisplayName("Test set element in empty list throws IndexOutOfBoundsException")
     @Test
-    void testSetElementEmptyListThrowsIllegalStateException() {
-        assertThrows(IllegalStateException.class, () -> {
+    void testSetElementEmptyListThrowsIndexOutOfBoundsException() {
+        assertThrows(IndexOutOfBoundsException.class, () -> {
             list.set(2, 0);
         });
     }
 
-    @DisplayName("Test set null element in list throws IllegalStateException")
+    @DisplayName("Test set null element could be set")
     @Test
-    void testSetNullElementThrowsIllegalStateException() {
-
+    void testSetNullCouldBeSet() {
         list.add(2);
-        assertThrows(IllegalStateException.class, () -> {
-            list.set(null, 0);
-        });
-
+        list.set(null, 0);
     }
 
     @DisplayName("Test set index out of bound in list throws IndexOutOfBoundsException")
@@ -250,13 +234,10 @@ public abstract class AbstractListTest {
         assertEquals(10, list.get(0), "Elements differ");
     }
 
-    @DisplayName("Test index of null element throws IllegalStateException")
+    @DisplayName("Test index of null element on empty list returns -1")
     @Test
-    void testIndexOfNullValueThrowsIllegalStateException() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            list.indexOf(null);
-        });
+    void testIndexOfNullValueReturnsMinusOne() {
+        assertEquals(-1, list.indexOf(null), "Element is in list");
     }
 
     @DisplayName("Test index of on empty list returns -1")
@@ -292,13 +273,12 @@ public abstract class AbstractListTest {
         assertEquals(-1, list.indexOf(7));
     }
 
-    @DisplayName("Test last index of null element throws IllegalStateException")
+    @DisplayName("Test last index of null element returns index")
     @Test
-    void testLastIndexOfNullValueThrowsIllegalStateException() {
-
-        assertThrows(IllegalStateException.class, () -> {
-            list.lastIndexOf(null);
-        });
+    void testLastIndexOfNullValueReturnsIndex() {
+        list.add(null, 0);
+        int actual = list.lastIndexOf(null);
+//        assertEquals(0, actual, "");
     }
 
     @DisplayName("Test last index of on empty list returns -1")
