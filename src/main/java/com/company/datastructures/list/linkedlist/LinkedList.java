@@ -111,9 +111,6 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public boolean contains(T value) {
-        if (isEmpty()) {
-            return false;
-        }
         return indexOf(value) != -1;
     }
 
@@ -190,21 +187,16 @@ public class LinkedList<T> implements List<T> {
         private Node(T data) {
             this.data = data;
         }
-
-        @Override
-        public String toString() {
-            return data.toString();
-        }
     }
 
     private class LinkedListIterator implements Iterator<T> {
         private Node<T> next;
+        private Node<T> lastReturned;
         private boolean nextCalled;
         private int index;
 
         public LinkedListIterator() {
             next = head;
-            index = -1;
         }
 
         @Override
@@ -218,6 +210,7 @@ public class LinkedList<T> implements List<T> {
                 throw new NoSuchElementException();
             }
             T data = next.data;
+            lastReturned = next;
             next = next.next;
             nextCalled = true;
             index++;
@@ -229,9 +222,13 @@ public class LinkedList<T> implements List<T> {
             if (!nextCalled) {
                 throw new IllegalStateException();
             }
-            LinkedList.this.remove(index);
+//            LinkedList.this.remove(index - 1);
+
             index--;
             nextCalled = false;
         }
+    }
+
+    public static void main(String[] args) {
     }
 }

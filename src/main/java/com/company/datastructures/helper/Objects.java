@@ -1,7 +1,5 @@
 package com.company.datastructures.helper;
 
-import java.util.LinkedList;
-
 public final class Objects {
 
     public static void throwIfIndexOutOfBound(int index, int size) {

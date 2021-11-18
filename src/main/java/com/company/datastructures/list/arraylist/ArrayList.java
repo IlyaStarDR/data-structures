@@ -18,8 +18,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value) {
         ensureCapacity();
-        list[size] = value;
-        size++;
+        add(value, size);
     }
 
     @Override
